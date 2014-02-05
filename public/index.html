@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" >
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web site monitoring</title>
+    
+    <link href="/css/bootstrap.css" rel="stylesheet">
+    <link href="/css/main.css" rel="stylesheet">
+    <link rel="stylesheet" href="font-awesome/css/font-awesome.min.css">
+
+    <script src="/js/lib/angular.min.js"></script>
+	  <script src="/js/lib/angular-route.min.js"></script>
+    <script src="/js/lib/angular-resource.min.js"></script>
+
+    <script src="/socket.io/socket.io.js"></script>
+       
+    <script src="/js/app.js"></script>
+  </head>
+
+  <body ng-app="wardenApp">
+    <div id="wrapper" ng-controller="MainCntl">
+    <div class="navbar navbar-default navbar-fixed-top">
+                <div class="navbar-header">
+                  <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                  </button>
+                  <a class="navbar-brand" href="/">Warden: web site monitoring</a>
+                </div>
+                <div class="navbar-collapse collapse navbar-responsive-collapse">
+                  <ul class="nav navbar-nav navbar-right margin-right-2">
+                    <li>
+                        <a href="#"><i class="fa fa-bell"></i> Alerts
+                          <span class="badge badge-error" ng-bind="errors">{{errors}}</span>
+                          <span class="badge badge-warning" ng-bind="warnings">{{warnings}}</span>
+                        </a>
+                    </li>
+                     <li>
+                      <a href="/add"><i class="fa fa-plus"></i> Add</a>
+                    </li>
+                    <li>
+                      <a href="/settings"><i class="fa fa-cogs"></i> Setting</a>
+                    </li>
+                  </ul>
+                </div><!-- /.nav-collapse -->
+              </div><!-- /.navbar -->
+      <div id="page-wrapper">
+        <div class="row">
+          	<div class="col-md-12 no-pading">
+	            <div ng-view></div>
+          	</div>
+        </div><!-- /.row -->
+      </div><!-- /#page-wrapper -->
+    </div><!-- /#wrapper -->
+    <div growl></div>
+    <script src="/js/lib/moment.min.js"></script>
+    <script src="/js/lib/ui-bootstrap-custom-0.9.0.min.js"></script>
+    <script src="/js/lib/ui-bootstrap-custom-tpls-0.9.0.min.js"></script>
+
+  </body>
+</html>

@@ -1,0 +1,13 @@
+{
+  "name": "warden",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "express": "3.4.7",
+	"request": "2.27.0",
+	"socket.io": "0.9.16"
+  }
+}

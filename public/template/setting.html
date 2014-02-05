@@ -1,0 +1,128 @@
+<div>
+	<form class="form-horizontal" role="form" name="settingForm" ng-submit="save()">
+	<div class="col-md-offset-1 col-md-10">
+		<div class="panel panel-default">
+		 	<div class="panel-heading">Global Settings</div>
+		  	<div class="panel-body">
+		    	<div class="form-group">
+				    <label for="timeout" class="col-md-2 control-label">Ping timeout</label>
+				    <div class="col-md-9">
+				      	<input type="number" class="form-control" ng-model="item.timeOut" required>
+				    </div>
+	  			</div>
+				<div class="form-group">
+					    <label class="col-md-2 control-label">Warning response</label>
+					    <div class="col-md-9">
+					      	<input type="number" class="form-control" ng-model="item.warningTime" required>
+					    </div>
+		  		</div>
+				
+					<div class="form-group">
+				    <div class="col-md-offset-2 col-md-9">
+				      <div class="checkbox">
+				        <label>
+				          <input type="checkbox"  ng-model='item.sendAlert'> Send email
+				        </label>
+				      </div>
+		  			</div>
+		  		</div>
+
+	
+		  		<fieldset disabled='{{disableEmail()}}'>
+					<div ng-repeat="email in item.emails"  class="form-group" >
+					    <label class="col-md-2 control-label ">Email</label>
+					    <div class="col-md-9">
+					      <div class="input-group">
+						      <input type="email" class="form-control" ng-model="email.name"> 
+						      <span class="input-group-btn">
+						        <button class="btn btn-danger" type="button" ng-click='delEmail(email.$$hashKey)'>Del </button>
+						      </span>
+					    </div>
+					    </div>
+				  	</div>
+
+
+				  	<div class="form-group" >
+					    <label class="col-md-2 control-label ">Alert Email</label>
+					    <div class="col-md-9">
+					      <div class="input-group">
+						      <input type="email" class="form-control" name="inputEmail" placeholder="Email" ng-model="email">
+						      <span class="input-group-btn">
+						        <button class="btn btn-default" type="button" ng-click="addEmail()">Add</button>
+						      </span>
+					    </div>
+					    </div>
+				  	</div>
+
+				  	<div class="form-group">
+					    <label for="alertTimeout" class="col-md-2 control-label">Error for send </label>
+					    <div class="col-md-9">
+					      <input type="number" class="form-control" ng-model="item.errorForSend">
+					    </div>
+				  	</div>
+				</fieldset>
+
+				<div class="form-group">
+				    <label for="userName" class="col-md-2 control-label">User name</label>
+				    <div class="col-md-9">
+				      <input type="text" class="form-control" ng-model="item.userName">
+				    </div>
+			  	</div>
+
+			 	 <div class="form-group">
+				    <label for="inputPassword3" class="col-md-2 control-label">Password</label>
+				    <div class="col-md-9">
+				      <input type="password" class="form-control" ng-model="item.password">
+				    </div>
+			  	</div>
+
+
+<!--				
+				<div class="form-group">
+				    <label for="baseHost" class="col-md-2 control-label">Base Type</label>
+				    <div class="col-md-10">
+				      		<select class="form-control" id="baseType">
+								  <option>MongoDB</option>
+								  <option>None</option>
+							</select>
+				    </div>
+			  	</div>
+
+				<div class="form-group">
+				    <label for="baseHost" class="col-md-2 control-label">Base host</label>
+				    <div class="col-md-10">
+				      <input type="text" class="form-control" id="baseUser" placeholder="Base">
+				    </div>
+			  	</div>
+
+				<div class="form-group">
+				    <label for="baseUser" class="col-md-2 control-label">User name</label>
+				    <div class="col-md-10">
+				      <input type="text" class="form-control" id="baseUser" placeholder="User Name">
+				    </div>
+			  	</div>
+
+			 	 <div class="form-group">
+				    <label for="basePassword" class="col-md-2 control-label">Password</label>
+				    <div class="col-md-10">
+				      <input type="password" class="form-control" id="basePassword" placeholder="Password">
+				    </div>
+			  	</div>
+
+-->
+		  	</div>
+		</div>
+	</div>
+
+
+	  	<div class="form-group">
+		    <div class="col-md-offset-1 col-md-10">
+		    <div class="text-center">
+		      <button type="submit" class="btn btn-success" ng-disabled="settingForm.$invalid">Save</button>
+		      <button type="button" class="btn btn-danger" ng-click="goPath('/')">Cancel</button>
+		    </div>
+		    </div>
+	  	</div>
+
+	</form>
+</div>

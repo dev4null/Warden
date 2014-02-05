@@ -1,0 +1,177 @@
+<div>
+	<form class="form-horizontal" role="form" name="editForm" ng-submit="save()">
+	<div class="col-md-offset-1 col-md-10">
+		<div class="panel panel-default">
+		 	<div class="panel-heading">System</div>
+		  	<div class="panel-body">
+		  	<!--
+				<div class="form-group">
+				    <div class="col-md-offset-2 col-md-9">
+				      <div class="checkbox">
+				        <label>
+				          <input type="checkbox" ng-model="site.active">Active
+				        </label>
+				      </div>
+		  			</div>
+		  		</div>
+		  	-->	
+					<div class="form-group">
+					    <label class="col-md-2 control-label">Name</label>
+					    <div class="col-md-9">
+					      <input type="text" class="form-control" ng-model="site.website"> 
+					    </div>
+				  	</div>
+
+				  	<div class="form-group">
+					    <label class="col-md-2 control-label">Url</label>
+					    <div class="col-md-9">
+					      <input type="url" class="form-control" ng-model="site.url" required>
+					    </div>
+				  	</div>
+					
+					<!--
+					<div class="form-group">
+					    <div class="col-md-offset-2 col-md-9">
+					      <div class="checkbox">
+					        <label>
+					          <input type="checkbox" ng-model="site.sendAlert">Default timing
+					        </label>
+					      </div>
+			  			</div>
+		  			</div>
+
+			    	<div class="form-group">
+					    <label class="col-md-2 control-label">Ping timeout</label>
+					    <div class="col-md-9">
+					      	<input type="number" class="form-control" ng-model="site.timeout" required>
+					    </div>
+		  			</div>
+
+		  			<div class="form-group">
+					    <label class="col-md-2 control-label">Warning response</label>
+					    <div class="col-md-9">
+					      	<input type="number" class="form-control" ng-model="site.warningTime" required>
+					    </div>
+		  			</div>
+					-->
+
+					<div class="form-group">
+					    <div class="col-md-offset-2 col-md-9">
+					      <div class="checkbox">
+					        <label>
+					          <input type="checkbox" ng-model="site.useProxy">Use proxy
+					        </label>
+					      </div>
+			  			</div>
+			  		</div>
+
+
+				<fieldset ng-disabled="!site.useProxy">
+	  			<div class="form-group">
+				    <label class="col-md-2 control-label">Proxy</label>
+				    <div class="col-md-9">
+				      <input type="text" class="form-control" ng-model="site.proxyUrl">
+				    </div>
+			  	</div>
+			  	</fieldset>
+
+<!--
+				<div class="form-group">
+				    <div class="col-md-offset-2 col-md-9">
+				      <div class="checkbox">
+				        <label>
+				          <input type="checkbox" ng-model="site.sendAlert">Send email
+				        </label>
+				      </div>
+		  			</div>
+		  			<div class="col-md-offset-2 col-md-9">
+				      <div class="checkbox">
+				        <label>
+				          <input type="checkbox" ng-model="site.emailDefault">Default settings
+				        </label>
+				      </div>
+		  			</div>
+		  		</div>
+
+	
+		  		<fieldset ng-disabled="!site.sendAlert || site.emailDefault">
+					<div ng-repeat="email in site.alertEmail"  class="form-group" >
+					    <label class="col-md-2 control-label ">Email</label>
+					    <div class="col-md-9">
+					      <div class="input-group">
+						      <input type="email" class="form-control" ng-model="email.text"> 
+						      <span class="input-group-btn">
+						        <button class="btn btn-danger" type="button" value="{{email.id}}" ng-click='delEmail(this.value)'>Del</button>
+						      </span>
+					    </div>
+					    </div>
+				  	</div>
+
+				  	<div class="form-group" >
+					    <label class="col-md-2 control-label ">Email</label>
+					    <div class="col-md-9">
+					      <div class="input-group">
+						      <input type="email" class="form-control" placeholder="Email" ng-model="email">
+						      <span class="input-group-btn">
+						        <button class="btn btn-default" type="button" ng-click="addEmail()">Add</button>
+						      </span>
+					    </div>
+					    </div>
+				  	</div>
+
+				  	<div class="form-group">
+					    <label class="col-md-2 control-label">Errors for alert</label>
+					    <div class="col-md-9">
+					      <input type="number" class="form-control" ng-model="site.maxAlert">
+					    </div>
+				  	</div>
+				</fieldset>
+
+-->
+			  	<div class="form-group">
+				    <div class="col-md-offset-2 col-md-9">
+				      <div class="checkbox">
+				        <label>
+				          <input type="checkbox" ng-model="site.useCredentials">Authorization
+				        </label>
+				      </div>
+		  			</div>
+		  			<div class="col-md-offset-2 col-md-9">
+				      <div class="checkbox">
+				        <label>
+				          <input type="checkbox" ng-model="site.useDefaultCredentials">Default Credentials
+				        </label>
+				      </div>
+		  			</div>
+		  		</div>
+
+				<fieldset ng-disabled="!site.useCredentials || site.useDefaultCredentials">
+			  		<div class="form-group">
+					    <label class="col-md-2 control-label">User name</label>
+					    <div class="col-md-9">
+					      <input type="text" class="form-control" ng-model="site.userName">
+					    </div>
+				  	</div>
+
+				 	 <div class="form-group">
+					    <label class="col-md-2 control-label">Password</label>
+					    <div class="col-md-9">
+					      <input type="password" class="form-control" ng-model="site.userPassword">
+					    </div>
+				  	</div>
+				</fieldset>
+		  	</div>
+		</div>
+	</div>
+
+	<div class="form-group">
+		<div class="col-md-offset-1 col-md-10">
+		    <div class="text-center">
+		      <button type="submit" class="btn btn-success" ng-disabled="editForm.$invalid" >Save</button>
+		      <button type="button" class="btn btn-danger" ng-click="goPath('/')">Cancel</button>
+		    </div>
+		</div>
+	 </div>
+	</div>
+	</form>
+</div>

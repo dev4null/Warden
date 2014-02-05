@@ -1,0 +1,91 @@
+<div>
+	<div class="col-md-12">
+		<div class="panel panel-default">
+		 	<div class="panel-heading clearfix">Detail for {{site.website}}
+				<div class="btn-group pull-right">
+	        		<a href="/" class="btn btn-default btn-sm">Back</a>	        
+	      		</div>
+		 	</div>
+		  	<div class="panel-body">
+				<div class="container-fluid">
+				  	<div class="row">
+				   		<div class="col-md-3">
+						
+						<div class="panel panel-default">
+					 	<div class="panel-heading">Info</div>
+					  	<div class="panel-body">
+
+							<div>
+								<label class="control-label">upTime - </label>
+								<span> {{site.upTime}} %</span>
+							</div>
+
+							<div>
+								<label class="control-label">Response (avg) - </label>
+								<span>{{site.avgResponseTime}} ms</span>
+							</div>
+
+							<div>
+								<label class="control-label">runTime - </label>
+								<span>{{runTimeFormat(site.runTime,true)}}</span>
+							</div>
+
+							<div>
+								<label class="control-label">downTime - </label>
+								<span>{{runTimeFormat(site.downTime,true)}}</span>
+							</div>
+
+							</div>
+							</div>
+				   		</div>
+							<div class="col-md-6" ng-show="site.topError.length>0">
+								<div class="panel panel-default" >
+							 	<div class="panel-heading">Errors</div>
+							  	<div class="panel-body">
+									<table class="table" >
+								  	<thead>
+					                  	<tr>
+						                    <th>Time</th>
+						                    <th>Error</th>
+						                    <th>DownTime</th>
+					                  	</tr>
+				                	</thead>
+				                	<tbody>
+							  		<tr ng-repeat="error in site.topError" >
+							  			<td>{{dateFormat(error.time)}}</td>
+										<td>{{error.text}} </td>
+										<td>{{runTimeFormat(error.downTime,true)}}</td>
+							  		</tr>
+								  	</tbody>  
+								    </table>
+								</div>
+								</div>
+  							</div>
+  							<div class="col-md-3" ng-show="site.topWarning.length>0">
+  								<div class="panel panel-default">
+							 	<div class="panel-heading">Warning</div>
+							  	<div class="panel-body">
+								<table class="table" >
+							  	<thead>
+				                  	<tr>
+					                    <th>Time</th>
+					                    <th>Responce</th>
+				                  	</tr>
+			                	</thead>
+			                	<tbody>
+						  		<tr ng-repeat="warning in site.topWarning" >
+						  			<td>{{dateFormat(warning.time)}}</td>
+									<td>{{warning.text}} ms</td>
+						  		</tr>
+							  	</tbody>  
+							    </table>
+							</div>
+							</div>
+  							</div>
+
+					</div>
+				</div>	
+		  	</div>
+		</div>
+	</div>
+</div>

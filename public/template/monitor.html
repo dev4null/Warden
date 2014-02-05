@@ -1,0 +1,58 @@
+<div>
+	<div class="col-md-12">
+		<div class="panel panel-default">
+		 	<div class="panel-heading clearfix"><b>Monitor</b>
+					<div class="btn-group pull-right">
+		        		<input type="text" class="form-control input-sm search-query" placeholder="Search" ng-model="filter">        
+		      		</div>		 	
+		 	</div>
+		  	<div class="panel-body">
+		  		<div class="table-responsive">
+				  <table class="table" >
+				  	<thead>
+	                  	<tr>
+	                  		<th class="text-center">#</th>
+		                    <th>Site</th>
+		                    <th>Last Response</th>
+		                    <th>Response Avg.</th>
+		                    <th>Uptime</th>
+		                    <th>Total Response</th>
+		                    <th>Last Error</th>
+	                  	</tr>
+                	</thead>
+					<tbody>
+				  		<tr ng-repeat="site in sites | filter:{ website: filter } | orderBy:['-state','-reqestTime']" 
+				  			ng-class="{0: '', 1:'warning', 2:'danger'}[site.state]" >
+				  			<td class="text-center">
+				  				<i ng-class="{true:'fa fa-male fa-lg'}[site.useCredentials]" tooltip="Use credentials"></i>&nbsp;
+				  				<i ng-class="{true:'fa fa-sign-in fa-lg'}[site.useProxy]" tooltip="Use proxy"></i>
+				  			</td>
+				  			<td><a href="{{site.url}}" target="_blank" />{{site.website}}</a> </td>  
+				  			<td>{{getResponceTime(site)}}</td>
+				  			<td class="text-center">{{site.avgResponseTime}} {{site.avgResponseTime ? 'ms' :''}}</td>
+				  			<td class="text-center">{{site.upTime}} %</td>
+				  			<td class="text-center">
+				  				<span class="badge badge-success">{{site.succesCount}}</span> 
+				  				<span class="badge badge-warning">{{site.warningCount}}</span>
+				  				<span class="badge badge-error">{{site.errorCount}}</span>
+				  			</td>
+				  			
+				  			<td>
+							<a href="#" popover="{{site.errorMessage}}" popover-trigger="mouseenter" popover-placement="bottom" Popover-animation="true">
+							 {{dateFormat(site.lastErrorTime)}} <small>{{timeAgo(site.lastErrorTime)}}</small></a>
+				  			</td>
+				  			<td class="text-center">
+				  				<a href="#" ng-click="setActive(site)" tooltip="Start/Stop monitoring"><i ng-class="{true:'fa fa-play fa-lg', false:'fa fa-stop fa-lg'}[site.active]"></i></a>
+				  				&nbsp;
+					  			<a href="edit/{{site.id}}" tooltip="Edit"><i class="fa fa-edit fa-lg"></i></a>
+								&nbsp; 
+					  			<a href="view/{{site.id}}" tooltip="View detail"><i class="fa fa-hand-o-right fa-lg"></i></a>
+				  			</td>
+				  		</tr>
+				  	</tbody>  
+				  </table>
+				</div>	
+			</div>
+		</div>
+	</div>
+</div>
