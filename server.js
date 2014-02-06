@@ -11,7 +11,6 @@ var monitors = [],
     errors = [],
     warnings =[]
 
-
 app.set('port', process.env.PORT || 9658)
 app.use(express.json())
 app.use(express.urlencoded())
@@ -26,7 +25,7 @@ app.use(express.cookieSession({
 app.use(app.router)
 app.use(express.static(path.join(__dirname, 'public')))
 
-app.get('/getdata', function(req, res, next) {
+app.get('/getdata', function(req, res, next) { 
 	res.writeHead(200, {"Content-Type": "application/json"})
 	var monitorsMini=[]
   	monitors.forEach(function (monitorInfo) {
