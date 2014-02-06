@@ -43,6 +43,9 @@
                     <li>
                       <a href="/settings"><i class="fa fa-cogs"></i> Setting</a>
                     </li>
+                    <li>
+                      <a  data-toggle="modal" href="#Login"><i class="fa fa-cogs"></i>Login</a>
+                    </li>
                   </ul>
                 </div><!-- /.nav-collapse -->
               </div><!-- /.navbar -->
@@ -54,7 +57,25 @@
         </div><!-- /.row -->
       </div><!-- /#page-wrapper -->
     </div><!-- /#wrapper -->
-    <div growl></div>
+
+    <div class="modal hide" id="Login">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">x</button>
+            <h3>Login to Warden</h3>
+          </div>
+          <div class="modal-body">
+            <form method="post" action='' name="login_form">
+              <p><input type="text" class="span3" name="eid" id="name" placeholder="User Name"></p>
+              <p><input type="password" class="span3" name="passwd" placeholder="Password"></p>
+              <p><button type="submit" class="btn btn-primary">Sign in</button></p>
+            </form>
+          </div>
+          <div class="modal-footer">
+          </div>
+        </div>
+  </div>
+
+
     <script src="/js/lib/moment.min.js"></script>
     <script src="/js/lib/ui-bootstrap-custom-0.9.0.min.js"></script>
     <script src="/js/lib/ui-bootstrap-custom-tpls-0.9.0.min.js"></script>

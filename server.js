@@ -1,7 +1,5 @@
 var express = require('express')
-var http = require('http')
 var path = require('path')
-var socket = require('socket.io')
 
 var app = express() 
 
@@ -15,20 +13,18 @@ var monitors = [],
 
 
 app.set('port', process.env.PORT || 3000)
-app.use(express.favicon())
-//app.use(express.logger('dev'))
 app.use(express.json())
 app.use(express.urlencoded())
 app.use(express.methodOverride())
-app.use(express.cookieParser('your secret here'))
-app.use(express.session())
+app.use(express.cookieParser('Z5V45V6B5U56B7J5N67J5VTH345GC4G5V4'));
+app.use(express.cookieSession({
+		 key:    'uptime',
+		 secret: 'FZ5HEE5YHD3E566756234C45BY4DSFZ4',
+		 proxy:  true,
+		 cookie: { maxAge: 30 * 60 * 1000 }
+		 }));
 app.use(app.router)
 app.use(express.static(path.join(__dirname, 'public')))
-
-// development only
-if ('development' == app.get('env')) {
-  app.use(express.errorHandler())
-}
 
 app.get('/getdata', function(req, res, next) {
 	res.writeHead(200, {"Content-Type": "application/json"})
@@ -107,6 +103,21 @@ app.get('/start/:id*', function(req, res, next) {
 	  }
 })
 
+app.get('/del/:id*', function(req, res, next) {
+	var monitor = getMonitorById(req.param('id'))
+	if (monitor)
+	  {
+	  	monitor.start()
+	  	res.writeHead(200, {"Content-Type": "text/html"})
+	  	res.end()
+	  }
+	else 
+	  {
+	  	res.writeHead(404, {"Content-Type": "text/html"})
+	  	res.end()
+	  }
+})
+
 
 app.get('/setting', function(req, res, next) {
 	
@@ -163,11 +174,11 @@ function getMonitorById(value)
   	return result? result[0] : null 
 } 
 
-var server = http.createServer(app).listen(app.get('port'), function(){
+var server = require('http').createServer(app).listen(app.get('port'), function(){
   	console.log('Express server listening on port ' + app.get('port'))
 })
 
-var io = socket.listen(server)
+var io = require('socket.io').listen(server)
 io.set('log level', 1)
 
 function addMonitor(data)
@@ -250,5 +261,20 @@ websites.forEach(function (website) {
 io.sockets.on('connection', function(socket) {
  	io.sockets.emit('alert', { error: errors.length, warning: warnings.length })
 })
+
+
+var gc = global.gc || function() {};
+
+/*
+var util = require('util')
+
+function clear()
+{
+	console.log('Memory Usage Before:' + util.inspect(process.memoryUsage()));
+    global.gc()
+    console.log('Memory Usage After:' + util.inspect(process.memoryUsage()));
+}*/
+
+setInterval(function () {clear()}, 60000)
 
 

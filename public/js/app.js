@@ -9,7 +9,7 @@ wardenApp.config(function($routeProvider, $locationProvider) {
     .when('/edit/:id', { templateUrl: '/template/edit.html', controller: 'editCntl' })
     .when('/add', { templateUrl: '/template/edit.html', controller: 'addCntl' })
     .when('/view/:id', { templateUrl: '/template/view.html', controller: 'viewCntl' })
-    .otherwise({redirectTo: '/'})
+    //.otherwise({redirectTo: '/'})
     $locationProvider.html5Mode(true)
 })
 

@@ -1,7 +1,7 @@
 
 function appSetting () {
 
-    this.timeOut = 15
+    this.timeOut = 30
     this.warningTime = 1200
     this.sendAlert = false
     this.userName = 'user'

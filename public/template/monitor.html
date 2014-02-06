@@ -12,23 +12,26 @@
 				  	<thead>
 	                  	<tr>
 	                  		<th class="text-center">#</th>
-		                    <th>Site</th>
-		                    <th>Last Response</th>
-		                    <th>Response Avg.</th>
-		                    <th>Uptime</th>
-		                    <th>Total Response</th>
-		                    <th>Last Error</th>
+		                    <th class="text-center">Site</th>
+		                    <th class="text-center">Last Response</th>
+		                    <th class="text-center">Response Avg.</th>
+		                    <th class="text-center">Uptime</th>
+		                    <th class="text-center">Total Re sponse</th>
+		                    <th class="text-center">Last Error</th>
+		                    <th>&nbsp;</th>
 	                  	</tr>
                 	</thead>
 					<tbody>
-				  		<tr ng-repeat="site in sites | filter:{ website: filter } | orderBy:['-state','-reqestTime']" 
+				  		<tr ng-repeat="site in sites | filter:{ website: filter } | orderBy:['-state']" 
 				  			ng-class="{0: '', 1:'warning', 2:'danger'}[site.state]" >
 				  			<td class="text-center">
+				  				<i ng-class="{true:'fa fa-play fa-lg', false:'fa fa-stop fa-lg'}[site.active]" tooltip="Status"></i>
 				  				<i ng-class="{true:'fa fa-male fa-lg'}[site.useCredentials]" tooltip="Use credentials"></i>&nbsp;
 				  				<i ng-class="{true:'fa fa-sign-in fa-lg'}[site.useProxy]" tooltip="Use proxy"></i>
+
 				  			</td>
 				  			<td><a href="{{site.url}}" target="_blank" />{{site.website}}</a> </td>  
-				  			<td>{{getResponceTime(site)}}</td>
+				  			<td class="text-center">{{getResponceTime(site)}}</td>
 				  			<td class="text-center">{{site.avgResponseTime}} {{site.avgResponseTime ? 'ms' :''}}</td>
 				  			<td class="text-center">{{site.upTime}} %</td>
 				  			<td class="text-center">
@@ -42,7 +45,7 @@
 							 {{dateFormat(site.lastErrorTime)}} <small>{{timeAgo(site.lastErrorTime)}}</small></a>
 				  			</td>
 				  			<td class="text-center">
-				  				<a href="#" ng-click="setActive(site)" tooltip="Start/Stop monitoring"><i ng-class="{true:'fa fa-play fa-lg', false:'fa fa-stop fa-lg'}[site.active]"></i></a>
+				  				<a href="#" ng-click="setActive(site)" tooltip="Start/Stop monitoring"></a>
 				  				&nbsp;
 					  			<a href="edit/{{site.id}}" tooltip="Edit"><i class="fa fa-edit fa-lg"></i></a>
 								&nbsp; 

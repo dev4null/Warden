@@ -100,6 +100,7 @@ MonitorInfo.prototype.start =  function () {
             self.active=true
             self.reqestTime = self.lastSuccesTime = Date.now()
             self.handle = setInterval(function () {self.ping()}, self.timeout)
+            self.ping()
         }
 
 MonitorInfo.prototype.stop = function () {
@@ -122,6 +123,10 @@ MonitorInfo.prototype.reloadDefault = function (setting) {
 
         self.timeout = setting.timeOut
         self.warningTime = setting.warningTime
+
+        clearInterval(self.handle)
+        self.handle = setInterval(function () {self.ping()}, self.timeout)
+
         //self.errorForSend = setting.errorForSend
         //self.sendAlert = setting.sendAlert
 
