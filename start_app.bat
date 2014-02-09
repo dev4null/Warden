@@ -1,2 +1,2 @@
-node --debug --expose-gc server.js
+node --debug server.js
 pause

@@ -222,7 +222,7 @@ MonitorInfo.prototype.isErrorFn = function (runTime) {
             self.errorCount++
             self.lastErrorTime = currentTime
 
-            if (self.topError.length >= 25)
+            if (self.topError.length >= 20)
             {
                 self.topError.pop()
             }
@@ -255,7 +255,7 @@ MonitorInfo.prototype.isWarningFn = function ()
         var self = this
 
         self.warningCount++
-        if (self.topWarning.length >= 25)
+        if (self.topWarning.length >= 20)
             {
                 self.topWarning.pop()
             }

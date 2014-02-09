@@ -1,15 +1,15 @@
 <div>
 	<div class="col-md-12">
 		<div class="panel panel-default">
-		 	<div class="panel-heading clearfix"><b>Monitor</b>
-					<div class="btn-group pull-right">
-		        		<input type="text" class="form-control input-sm search-query" placeholder="Search" ng-model="filter">        
-		      		</div>		 	
+		 	<div class="panel-heading clearfix"><b>Alerts</b>
+		 	<div class="btn-group pull-right">
+	        		<a href="/" class="btn btn-default btn-sm">Back</a>	        
+	      		</div> 	
 		 	</div>
 		  	<div class="panel-body">
 		  		<div class="table-responsive">
-		  		<p class="text-center col-md-12 lead" ng-show="sites.length==0">No sites</p>
-				  <table class="table" ng-show="!sites.length==0">
+				<p class="text-center col-md-12 lead" ng-show="sites.length==0">No sites</p>
+				<table class="table" ng-show="!sites.length==0">
 				  	<thead>
 	                  	<tr>
 	                  		<th class="text-center">#</th>
@@ -23,7 +23,7 @@
 	                  	</tr>
                 	</thead>
 					<tbody>
-				  		<tr ng-repeat="site in sites | filter:{ website: filter } | orderBy:['-state']" 
+				  		<tr ng-repeat="site in sites | orderBy:['-state']" 
 				  			ng-class="{1:'warning', 2:'danger'}[site.state]" >
 				  			<td class="text-center">
 				  				<i ng-class="{true:'glyphicon glyphicon-user'}[site.useCredentials]" tooltip="Use credentials"></i>&nbsp;
@@ -44,9 +44,11 @@
 							 {{dateFormat(site.lastErrorTime)}} <small>{{timeAgo(site.lastErrorTime)}}</small></a>
 				  			</td>
 				  			<td class="text-center">
+					  			<td class="text-center">
 					  			<a href="edit/{{site.id}}" tooltip="Edit" login><i class="glyphicon glyphicon-pencil"></i></a>
 								&nbsp; 
 					  			<a href="view/{{site.id}}" tooltip="View detail"><i class="glyphicon glyphicon-info-sign"></i></a>
+				  			</td>
 				  			</td>
 				  		</tr>
 				  	</tbody>  

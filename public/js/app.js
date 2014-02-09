@@ -9,6 +9,8 @@ wardenApp.config(function($routeProvider, $locationProvider) {
     .when('/edit/:id', { templateUrl: '/template/edit.html', controller: 'editCntl' })
     .when('/add', { templateUrl: '/template/edit.html', controller: 'addCntl' })
     .when('/view/:id', { templateUrl: '/template/view.html', controller: 'viewCntl' })
+    .when('/alerts', { templateUrl: '/template/alerts.html', controller: 'alertsCntl' })
+
     //.otherwise({redirectTo: '/'})
     $locationProvider.html5Mode(true)
 })
@@ -17,15 +19,37 @@ wardenApp.config(function($routeProvider, $locationProvider) {
 function MainCntl($scope, $route, $routeParams, $location) {
 	$scope.errors = 0
 	$scope.warnings = 0
-    console.log($location.protocol()+'://'+$location.host()+':'+$location.port())
-	var socket = io.connect('http://localhost:3000');
+	var socket = io.connect($location.protocol()+'://'+$location.host()+':'+$location.port());
 		socket.on('alert', function (data) {
 			$scope.errors = data.error
 			$scope.warnings = data.warning
 			$scope.$apply();
 		});
-	console.log('main')
 
+
+	$scope.isAdmin=false
+
+	$scope.login = function()
+	{
+		$scope.isAdmin=true
+	}
+
+	$scope.logout = function()
+	{
+		$scope.isAdmin=false
+	}
+}
+
+function alertsCntl($scope, $http) {
+	var getData = function() {
+		$http.get('/alert')
+	        .success(function(data) {
+				$scope.sites = angular.fromJson(data)				        	
+	            })
+	            .error(function(data, status) {
+	            })
+	}
+	getData();
 }
 
 function viewCntl($scope, $route, $http, $location) {
@@ -152,21 +176,32 @@ function editCntl($scope, $route, $routeParams, $location, $http) {
 	    });
 	}
 
-}
-
-function monitorCntl($scope, $routeParams, $http, $timeout) {
-
-	$scope.setActive = function(site)
+	$scope.setActive = function()
 	{
-		var url = site.active ? 'stop': 'start'
+		console.log(1)
+		var url = $scope.site.active ? 'stop': 'start'
 
-		 $http.get('/'+url+'/'+site.id)
+		 $http.get('/'+url+'/'+$scope.site.id)
 	        .success(function(data) {
+	        	$location.path( '/' );
 	            })
 	            .error(function(data, status) {
 	            })
-		
 	}
+
+	$scope.delete = function()
+	{
+		 $http.get('/del/'+$scope.site.id)
+	        .success(function(data) {
+	        	$location.path( '/' );
+	            })
+	            .error(function(data, status) {
+	            })
+	}
+
+}
+
+function monitorCntl($scope, $routeParams, $http, $timeout) {
 
 	$scope.getResponceTime = function (data)
 	{
@@ -237,17 +272,15 @@ function settingCntl($scope, $http, $location) {
     	$scope.item.emails.splice(index, 1)
   	}
 
+
   	$scope.goPath = function ( path ) {
 	  $location.path( path );
 	};
 
-	$scope.save=function(){
+	$scope.save = function() {
 
-        $http({
-		    method: 'POST',
-		    url: '/setting',
-		    data: angular.toJson($scope.item)
-		   //headers: {'Content-Type': 'application/json'}
+        $http({ method: 'POST', url: '/setting',
+		    	data: angular.toJson($scope.item)
 			})
         .success(function(data, status, headers, config){ 
 			$location.path( '/' );
@@ -255,6 +288,20 @@ function settingCntl($scope, $http, $location) {
 	    .error(function(data, status, headers, config) {
 	    });
 	}
-    	
+
 }
 
+wardenApp.directive('login', function() {
+     return function($scope, element, attr) { 
+     	$scope.$watch('isAdmin', function(isAdmin) {
+               element.css({ display: isAdmin ? 'initial' : 'none' });
+            }, true);
+     	
+    };
+  }).directive('public', function() {
+     return function($scope, element, attr) { 
+     	$scope.$watch('isAdmin', function(isAdmin) {
+               element.css({ display: isAdmin ? 'none' : 'initial' });
+            }, true);
+    };
+  });

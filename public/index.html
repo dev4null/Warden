@@ -3,11 +3,10 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Web site monitoring</title>
+    <title> Web site monitoring</title>
     
     <link href="/css/bootstrap.css" rel="stylesheet">
     <link href="/css/main.css" rel="stylesheet">
-    <link rel="stylesheet" href="font-awesome/css/font-awesome.min.css">
 
     <script src="/js/lib/angular.min.js"></script>
 	  <script src="/js/lib/angular-route.min.js"></script>
@@ -27,24 +26,27 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                   </button>
-                  <a class="navbar-brand" href="/">Warden: web site monitoring</a>
+                  <a class="navbar-brand" href="/"> <span class="glyphicon glyphicon-star"></span> Warden web site monitoring</a>
                 </div>
                 <div class="navbar-collapse collapse navbar-responsive-collapse">
                   <ul class="nav navbar-nav navbar-right margin-right-2">
                     <li>
-                        <a href="#"><i class="fa fa-bell"></i> Alerts
+                        <a href="/alerts"><i class="glyphicon glyphicon-bell"></i> Alerts
                           <span class="badge badge-error" ng-bind="errors">{{errors}}</span>
                           <span class="badge badge-warning" ng-bind="warnings">{{warnings}}</span>
                         </a>
                     </li>
-                     <li>
-                      <a href="/add"><i class="fa fa-plus"></i> Add</a>
+                     <li login>
+                      <a href="/add"><i class="glyphicon glyphicon-plus"></i> Add</a>
                     </li>
-                    <li>
-                      <a href="/settings"><i class="fa fa-cogs"></i> Setting</a>
+                    <li login>
+                      <a href="/settings"><i class="glyphicon glyphicon-cog"></i> Setting</a>
                     </li>
-                    <li>
-                      <a  data-toggle="modal" href="#Login"><i class="fa fa-cogs"></i>Login</a>
+                    <li public>
+                      <a href="#" ng-click ="login()"><i class="glyphicon glyphicon-log-in"></i> Login</a>
+                    </li>
+                    <li login>
+                      <a href="#" ng-click ="logout()"><i class="glyphicon glyphicon-log-out"></i> Logout</a>
                     </li>
                   </ul>
                 </div><!-- /.nav-collapse -->

@@ -1,3 +1,5 @@
+"use strict"
+
 var express = require('express')
 var path = require('path')
 
@@ -11,14 +13,14 @@ var monitors = [],
     errors = [],
     warnings =[]
 
-app.set('port', process.env.PORT || 9658)
+app.set('port', process.env.PORT || 3000)
 app.use(express.json())
 app.use(express.urlencoded())
 app.use(express.methodOverride())
-app.use(express.cookieParser('Z5V45V6B5U56B7J5N67J5VTH345GC4G5V4'));
+app.use(express.cookieParser('Z5V7J54G5TGC445VU5B7J556B3N6V6H5V4'));
 app.use(express.cookieSession({
-		 key:    'uptime',
-		 secret: 'FZ5HEE5YHD3E566756234C45BY4DSFZ4',
+		 key:    'ward',
+		 secret: 'FZ5EHD5BEE56675HY34C43625Y4DSFZ4',
 		 proxy:  true,
 		 cookie: { maxAge: 30 * 60 * 1000 }
 		 }));
@@ -31,8 +33,7 @@ app.get('/getdata', function(req, res, next) {
   	monitors.forEach(function (monitorInfo) {
   		monitorsMini.push(monitorInfo.getData())
 	})
-  	var info = JSON.stringify(monitorsMini)
-  	res.write(info)
+  	res.write(JSON.stringify(monitorsMini))
   	res.end() 
 })
 
@@ -71,6 +72,7 @@ app.get('/detail/:id*', function(req, res, next) {
     } 
 })
 
+//post
 app.get('/stop/:id*', function(req, res, next) {
 	var monitor = getMonitorById(req.param('id'))
 
@@ -87,6 +89,7 @@ app.get('/stop/:id*', function(req, res, next) {
 	  }
 })
 
+//post
 app.get('/start/:id*', function(req, res, next) {
 	var monitor = getMonitorById(req.param('id'))
 	if (monitor)
@@ -102,11 +105,18 @@ app.get('/start/:id*', function(req, res, next) {
 	  }
 })
 
+//post
 app.get('/del/:id*', function(req, res, next) {
 	var monitor = getMonitorById(req.param('id'))
 	if (monitor)
 	  {
-	  	monitor.start()
+	  	monitor.stop()
+
+	  	var index = monitors.indexOf(monitor);
+		if(index != -1) {
+			monitors.splice(index, 1);
+		}
+
 	  	res.writeHead(200, {"Content-Type": "text/html"})
 	  	res.end()
 	  }
@@ -124,6 +134,32 @@ app.get('/setting', function(req, res, next) {
 	res.write(JSON.stringify(appSettings.getData()))
 	res.end()
 	 
+})
+
+app.get('/alert', function(req, res, next) {
+	
+	res.writeHead(200, {"Content-Type": "application/json"})
+	var monitorsMini=[]
+	var monitor
+
+  	errors.forEach(function (id) {
+  		monitor = getMonitorById(id)
+		if (monitor)
+		  {
+		  	monitorsMini.push(monitor.getData())
+		  }	
+	})
+
+	warnings.forEach(function (id) {
+  		monitor = getMonitorById(id)
+		if (monitor)
+		  {
+		  	monitorsMini.push(monitor.getData())
+		  }	
+	})
+
+  	res.write(JSON.stringify(monitorsMini))
+  	res.end() 
 })
 
 app.post('/setting', function(req, res, next){
@@ -161,11 +197,41 @@ app.post('/add', function(req, res, next){
 	res.end()
 });
 
+app.post('/login', function(req, res, next){
+
+	res.writeHead(200, {"Content-Type": "application/json"})
+
+	if (req.body.user.toLowerCase() == 'admin')
+	{
+		if(req.body.pass=='pass')
+		{
+			res.cookie('user', JSON.stringify({'admin': true }));
+		}
+		else 
+		{
+			res.write(JSON.stringify( {'error': 'Bad password' }  ))
+			res.cookie('user', JSON.stringify({'admin': false }));
+		}
+	}
+	else 
+	{
+		res.write(JSON.stringify( {'error': 'Unknown user name' } ))
+		res.cookie('user', JSON.stringify({'admin': false }));
+	}
+
+	res.end()
+});
+
+app.post('/logout', function(req, res, next){
+	res.writeHead(200, {"Content-Type": "application/json"})	
+	res.cookie('user', JSON.stringify({'admin': false }));
+	res.end()
+});
+
 
 app.use(function(req, res) {
-	res.sendfile(__dirname + '/public/index.html')
+ 	res.sendfile(__dirname + '/public/index.html')
 })
-
 
 function getMonitorById(value)
 {
@@ -180,6 +246,19 @@ var server = require('http').createServer(app).listen(app.get('port'), function(
 var io = require('socket.io').listen(server)
 io.set('log level', 1)
 
+function getLastId()
+{
+	var id=0
+	monitors.forEach(function (monitorInfo) {
+  		if (monitorInfo.id > id)
+  		{
+  			id = monitorInfo.id
+  		}
+  	})
+
+  	return id
+}
+
 function addMonitor(data)
 {
 	var monitor = new MonitorInfo ({
@@ -189,7 +268,7 @@ function addMonitor(data)
         timeout: data.timeout,
         warningTime: data.warningTime,
         
-        id: data.id || monitors.length,
+        id: data.id || getLastId(),
 
         useProxy: data.useProxy,
         proxyUrl: data.proxyUrl,
@@ -261,19 +340,13 @@ io.sockets.on('connection', function(socket) {
  	io.sockets.emit('alert', { error: errors.length, warning: warnings.length })
 })
 
+var gcHandle = null
 
-var gc = global.gc || function() {};
+var gc = global.gc || function() {
+	clearInterval(gcHandle) 
+	console.log("Unsupport gc")
+};
 
-/*
-var util = require('util')
-
-function clear()
-{
-	console.log('Memory Usage Before:' + util.inspect(process.memoryUsage()));
-    global.gc()
-    console.log('Memory Usage After:' + util.inspect(process.memoryUsage()));
-}*/
-
-setInterval(function () {clear()}, 60000)
+gcHandle = setInterval(function () {gc()}, 60000)
 
 
