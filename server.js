@@ -13,7 +13,7 @@ var monitors = [],
     errors = [],
     warnings =[]
 
-app.set('port', process.env.PORT || 3000)
+app.set('port', process.env.PORT || 9658)
 app.use(express.json())
 app.use(express.urlencoded())
 app.use(express.methodOverride())
@@ -243,7 +243,7 @@ var server = require('http').createServer(app).listen(app.get('port'), function(
   	console.log('Express server listening on port ' + app.get('port'))
 })
 
-var io = require('socket.io').listen(server)
+var io = require('socket.io').listen(80) //.listen(server)
 io.set('log level', 1)
 
 function getLastId()
