@@ -2,9 +2,16 @@
 	<div class="col-md-12">
 		<div class="panel panel-default">
 		 	<div class="panel-heading clearfix"><b>Monitor</b>
-					<div class="btn-group pull-right">
-		        		<input type="text" class="form-control input-sm search-query" placeholder="Search" ng-model="filter">        
-		      		</div>		 	
+		 		<div class="btn-group pull-right"> 
+		        	<a href="#" ng-click="reload()" class="btn btn-default btn-sm">Reload</a>       
+		      	</div>
+		      	<div class="btn-group pull-right"> 
+		        	&nbsp;       
+		      	</div>
+				<div class="btn-group pull-right">
+		        	<input type="text" class="form-control input-sm search-query" placeholder="Search" ng-model="filter">
+		        </div>
+		        		 	
 		 	</div>
 		  	<div class="panel-body">
 		  		<div class="table-responsive">

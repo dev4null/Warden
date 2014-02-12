@@ -18,43 +18,6 @@ body {
   margin-right: 2px !important;
   }
 
-/* Nav Messages */
-
-.messages-dropdown .dropdown-menu .message-preview .avatar,
-.messages-dropdown .dropdown-menu .message-preview .name,
-.messages-dropdown .dropdown-menu .message-preview .message,
-.messages-dropdown .dropdown-menu .message-preview .time {
-  display: block;
-}
-
-.messages-dropdown .dropdown-menu .message-preview .avatar {
-  float: left;
-  margin-right: 15px;
-}
-
-.messages-dropdown .dropdown-menu .message-preview .name {
-  font-weight: bold;
-}
-
-.messages-dropdown .dropdown-menu .message-preview .message {
-  font-size: 12px;
-}
-
-.messages-dropdown .dropdown-menu .message-preview .time {
-  font-size: 12px;
-}
-
-
-/* Nav Announcements */
-
-.announcement-heading {
-  font-size: 50px;
-  margin: 0;
-}
-
-.announcement-text {
-  margin: 0;
-}
 
 /* Edit Below to Customize Widths > 768px */
 @media (min-width:768px) {

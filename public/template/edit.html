@@ -170,8 +170,8 @@
 		    <div class="text-center">
 		      <button type="submit" class="btn btn-success" ng-disabled="editForm.$invalid" >Save</button>
 		      &nbsp;
-		      <button type="button" class="btn btn-info" ng-click="setActive()">{{site.active ? 'Stop': 'Start'}}</button>
-			  <button type="button" class="btn btn-info" ng-click="delete()">Delete</button>
+		      <button type="button" class="btn btn-info" ng-show="isEdit" ng-click="setActive()">{{site.active ? 'Stop': 'Start'}}</button>
+			  <button type="button" class="btn btn-info" ng-show="isEdit" ng-click="delete()">Delete</button>
 			  &nbsp;
 		      <button type="button" class="btn btn-danger" ng-click="goPath('/')">Cancel</button>
 		    </div>
