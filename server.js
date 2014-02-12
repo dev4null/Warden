@@ -243,11 +243,11 @@ function getMonitorById(value)
 
 function getLastId()
 {
-	var id=1
+	var id=0
 	monitors.forEach(function (monitorInfo) {
   		id = monitorInfo.id > id ? id : monitorInfo.id
   	})
-  	return id
+  	return id+1
 }
 
 function addMonitor(data)

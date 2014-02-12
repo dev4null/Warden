@@ -200,7 +200,7 @@ wardenApp.controller('addCntl', function($scope, $http, growl) {
 
 wardenApp.controller('editCntl', function($scope, $route, $location, $http, growl) {
    $scope.email=''
-   $cope.isEdit=true
+   $scope.isEdit=true
 
    $scope.delEmail = function(i) {
     	$scope.site.alertEmail.splice(i, 1)
