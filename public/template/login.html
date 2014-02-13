@@ -1,18 +1,18 @@
 <div class="clearfix">
-    <div class="modal-header" style="padding:-12px;">
-      <button type="button" class="close" ng-click="cancel()">&times;</button>
-      <h4 class="modal-title">Login</h4>
+  <div class="modal-header" style="padding:-12px;">
+    <button type="button" class="close" ng-click="cancel()">&times;</button>
+    <h4 class="modal-title">Login</h4>
+  </div>
+  <div class="modal-body">
+    <div class="form-group">
+        <label class="control-label">User name</label>
+        <input type="text" class="form-control" ng-model="user.name">
     </div>
-    <div class="modal-body">
-        <div class="form-group">
-            <label class="control-label">User name</label>
-            <input type="text" class="form-control" ng-model="user.name">
-        </div>
-        <div class="form-group">
-            <label class="control-label">Password</label>
-                <input type="password" class="form-control" ng-model="user.pass">
-        </div>
+      <div class="form-group">
+        <label class="control-label">Password</label>
+        <input type="password" class="form-control" ng-model="user.pass">
     </div>
+  </div>
     <div class="modal-footer">
       <button type="button" class="btn btn-primary" ng-click="ok()">Login</button>
       <button type="button" class="btn btn-default" ng-click="cancel()">Close</button>

@@ -51,7 +51,7 @@
 							 {{dateFormat(site.lastErrorTime)}} <small>{{timeAgo(site.lastErrorTime)}}</small></a>
 				  			</td>
 				  			<td class="text-center">
-					  			<a href="edit/{{site.id}}" tooltip="Edit" login><i class="glyphicon glyphicon-pencil"></i></a>
+					  			<a href="edit/{{site.id}}" tooltip="Edit" ng-click="edit()" login><i class="glyphicon glyphicon-pencil"></i></a>
 								&nbsp; 
 					  			<a href="view/{{site.id}}" tooltip="View detail"><i class="glyphicon glyphicon-info-sign"></i></a>
 				  			</td>

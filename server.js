@@ -245,7 +245,7 @@ function getLastId()
 {
 	var id=0
 	monitors.forEach(function (monitorInfo) {
-  		id = monitorInfo.id > id ? id : monitorInfo.id
+  		id = monitorInfo.id < id ? id : monitorInfo.id
   	})
   	return id+1
 }

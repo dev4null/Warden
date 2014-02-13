@@ -18,6 +18,11 @@ body {
   margin-right: 2px !important;
   }
 
+@media (min-width: 768px)
+.modal-dialog .edit {
+width: 500px;
+margin: 30px auto;
+}
 
 /* Edit Below to Customize Widths > 768px */
 @media (min-width:768px) {

@@ -102,6 +102,16 @@ wardenApp.controller('MainCntl',function ($scope, $http, $location, $modal, $roo
       $http.post('/logout');
     };
 
+	$scope.add = function (id) {
+	 var modalInstance = $modal.open({
+	      templateUrl: '/template/edit.html',
+	       windowClass: 'edit',
+	      controller: 'addCntl'
+	     
+	    });
+	}
+
+
 })
 
 wardenApp.controller('loginCtrl', function ($scope, $modalInstance) {
@@ -119,88 +129,39 @@ wardenApp.controller('loginCtrl', function ($scope, $modalInstance) {
   };
 });
 
-wardenApp.controller('alertsCntl', function ($scope, $http, growl) {
-	var getData = function() {
-		$http.get('/alert')
-	        .success(function(data) {
-				$scope.sites = angular.fromJson(data)				        	
-	        })
-	        .error(function(data, status) {
-	        	growl.addErrorMessage("Failed to load data" + "("+status+")", {ttl: 7500});	
-	         })
-	}
-	
-	$scope.reload = function ()
-	{
-		getData()
-	}
 
-	getData()
-})
+wardenApp.controller('addCntl', function($scope, $http, $location, growl, $modalInstance) {
+	$scope.title="Add"
+	  $scope.site = { 
+			url: null,
+			website: null,
+			useDefaultCredentials: false,
+			useCredentials: false,
+			userName: null,
+			userPassword: null
+		}
 
-wardenApp.controller('viewCntl', function ($scope, $route, $http, growl) {
-  
-  var getData = function() {
-		$http.get('/detail/'+$route.current.params.id)
-	        .success(function(data) {
-				$scope.site = angular.fromJson(data)				        	
-	        })
-	        .error(function(data, status) {
-	        	growl.addErrorMessage("Failed to load data" + "("+status+")", {ttl: 7500});	
-	        })
-	}
-
-	$scope.runTimeFormat = function (date, milisec)
-	{
-		var str = moment.duration(date).months() != 0 ? moment.duration(date).months() + ' mon' : ''
-			str += moment.duration(date).days() != 0 ? ' ' + moment.duration(date).days() + ' day': ''
-			str += moment.duration(date).hours() != 0 ? ' ' + moment.duration(date).hours() + ' h': ''
-			str += moment.duration(date).minutes() != 0 ? ' ' + moment.duration(date).minutes() + ' min': ''
-			str += moment.duration(date).seconds() != 0 ? ' ' + moment.duration(date).seconds() + ' sec': ''
-
-			str += milisec ? ' ' + moment.duration(date).milliseconds() + ' ms': '' 
-
-		return str
-	}
-
-	$scope.dateFormat=function(date)
-	{
-		return moment(date).isValid() ? moment(date).format('HH:mm:ss.SS') : null
-	}
-
-	$scope.reload = function ()
-	{
-		getData()
-	}
-
-	getData()
-})
-
-wardenApp.controller('addCntl', function($scope, $http, growl) {
-  $scope.site = { 
-		url: null,
-		website: null,
-		useDefaultCredentials: false,
-		useCredentials: false,
-		userName: null,
-		userPassword: null
-	}
-
-	$scope.save=function(){
+	$scope.ok=function(){
         $http.post('/add', angular.toJson($scope.site))
         	.success(function(data, status, headers, config){ 
-				$location.path( '/' );
+				//$location.path( '/' );
+				 $modalInstance.dismiss('cancel');
 	    	})
 	    	.error(function(data, status, headers, config) {
 	    		growl.addErrorMessage("Failed to save" + "("+status+")", {ttl: 7500});	
 	    	});
-	}  
+	} 
+
+	$scope.cancel = function () {
+   $modalInstance.dismiss('cancel');
+  }; 
 })
 
 
 wardenApp.controller('editCntl', function($scope, $route, $location, $http, growl) {
    $scope.email=''
    $scope.isEdit=true
+   $scope.title="Edit"
 
    $scope.delEmail = function(i) {
     	$scope.site.alertEmail.splice(i, 1)
@@ -268,6 +229,65 @@ wardenApp.controller('editCntl', function($scope, $route, $location, $http, grow
 	}
 	getData()
 })
+
+wardenApp.controller('alertsCntl', function ($scope, $http, growl) {
+	var getData = function() {
+		$http.get('/alert')
+	        .success(function(data) {
+				$scope.sites = angular.fromJson(data)				        	
+	        })
+	        .error(function(data, status) {
+	        	growl.addErrorMessage("Failed to load data" + "("+status+")", {ttl: 7500});	
+	         })
+	}
+	
+	$scope.reload = function ()
+	{
+		getData()
+	}
+
+	getData()
+})
+
+wardenApp.controller('viewCntl', function ($scope, $route, $http, growl) {
+  
+  var getData = function() {
+		$http.get('/detail/'+$route.current.params.id)
+	        .success(function(data) {
+				$scope.site = angular.fromJson(data)				        	
+	        })
+	        .error(function(data, status) {
+	        	growl.addErrorMessage("Failed to load data" + "("+status+")", {ttl: 7500});	
+	        })
+	}
+
+	$scope.runTimeFormat = function (date, milisec)
+	{
+		var str = moment.duration(date).months() != 0 ? moment.duration(date).months() + ' mon' : ''
+			str += moment.duration(date).days() != 0 ? ' ' + moment.duration(date).days() + ' day': ''
+			str += moment.duration(date).hours() != 0 ? ' ' + moment.duration(date).hours() + ' h': ''
+			str += moment.duration(date).minutes() != 0 ? ' ' + moment.duration(date).minutes() + ' min': ''
+			str += moment.duration(date).seconds() != 0 ? ' ' + moment.duration(date).seconds() + ' sec': ''
+
+			str += milisec ? ' ' + moment.duration(date).milliseconds() + ' ms': '' 
+
+		return str
+	}
+
+	$scope.dateFormat=function(date)
+	{
+		return moment(date).isValid() ? moment(date).format('HH:mm:ss.SS') : null
+	}
+
+	$scope.reload = function ()
+	{
+		getData()
+	}
+
+	getData()
+})
+
+
 
 wardenApp.controller('monitorCntl', function ($scope, $http, growl) {
 
