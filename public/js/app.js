@@ -101,17 +101,6 @@ wardenApp.controller('MainCntl',function ($scope, $http, $location, $modal, $roo
   	  $scope.isAdmin=false
       $http.post('/logout');
     };
-
-	$scope.add = function (id) {
-	 var modalInstance = $modal.open({
-	      templateUrl: '/template/edit.html',
-	       windowClass: 'edit',
-	      controller: 'addCntl'
-	     
-	    });
-	}
-
-
 })
 
 wardenApp.controller('loginCtrl', function ($scope, $modalInstance) {
@@ -130,7 +119,7 @@ wardenApp.controller('loginCtrl', function ($scope, $modalInstance) {
 });
 
 
-wardenApp.controller('addCntl', function($scope, $http, $location, growl, $modalInstance) {
+wardenApp.controller('addCntl', function($scope, $http, $location, growl) {
 	$scope.title="Add"
 	  $scope.site = { 
 			url: null,
@@ -141,20 +130,15 @@ wardenApp.controller('addCntl', function($scope, $http, $location, growl, $modal
 			userPassword: null
 		}
 
-	$scope.ok=function(){
+	$scope.save=function(){
         $http.post('/add', angular.toJson($scope.site))
         	.success(function(data, status, headers, config){ 
-				//$location.path( '/' );
-				 $modalInstance.dismiss('cancel');
+				$location.path( '/' );
 	    	})
 	    	.error(function(data, status, headers, config) {
 	    		growl.addErrorMessage("Failed to save" + "("+status+")", {ttl: 7500});	
 	    	});
 	} 
-
-	$scope.cancel = function () {
-   $modalInstance.dismiss('cancel');
-  }; 
 })
 
 
@@ -373,7 +357,7 @@ wardenApp.controller('settingCntl', function ($scope, $http, $location, growl) {
 	getData()
 })
 
-
+/*
 wardenApp.directive('login', function() {
      return function($rootScope, element, attr) { 
      	$rootScope.$watch('isAdmin', function(isAdmin) {
@@ -386,8 +370,7 @@ wardenApp.directive('public', function() {
      return function($rootScope, element, attr) { 
      	$rootScope.$watch('isAdmin', function(isAdmin) {
                element.css({ display: isAdmin ? 'none' : 'initial' });
-            }, true);
+            }, true);  	
     };
-  });
-
-
+  })
+*/

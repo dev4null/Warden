@@ -38,17 +38,17 @@
                           <span class="badge badge-warning" ng-bind="warnings">{{warnings}}</span>
                         </a>
                     </li>
-                     <li login>
-                      <a href="#" ng-click ="add()"><i class="glyphicon glyphicon-plus"></i> Add</a>
+                     <li ng-show="isAdmin" login>
+                      <a href="/add" ><i class="glyphicon glyphicon-plus"></i> Add</a>
                     </li>
-                    <li login>
+                    <li ng-show="isAdmin" login>
                       <a href="/settings"><i class="glyphicon glyphicon-cog"></i> Setting</a>
                     </li>
-                    <li public>
-                      <a href="#" ng-click ="login()"><i class="glyphicon glyphicon-log-in"></i> Login</a>
+                    <li ng-hide="isAdmin" public>
+                      <a ng-click ="login()"><i class="glyphicon glyphicon-log-in"></i> Login</a>
                     </li>
-                    <li login>
-                      <a href="#" ng-click ="logout()"><i class="glyphicon glyphicon-log-out"></i> Logout</a>
+                    <li  ng-show="isAdmin" login>
+                      <a ng-click ="logout()"><i class="glyphicon glyphicon-log-out"></i> Logout</a>
                     </li>
                   </ul>
                 </div><!-- /.nav-collapse -->
@@ -61,7 +61,6 @@
         </div><!-- /.row -->
       </div><!-- /#page-wrapper -->
     </div><!-- /#wrapper -->
-  </div>
   <div growl></div>
   
   <script src="/js/lib/angular-growl.min.js"></script>
