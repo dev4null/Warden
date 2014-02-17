@@ -312,6 +312,8 @@ wardenApp.controller('monitorCntl', function ($scope, $http, growl) {
 	{
 		getData()
 	}
+	
+	getData()
 
 	getData()
 
