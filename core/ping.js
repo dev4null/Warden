@@ -56,7 +56,7 @@ function MonitorInfo (opts) {
     this.lastSuccesTime = null
     this.lastErrorTime = null
     this.errorMessage = null
-    this.state = 0   // 0 - ok; 1 - warning; 2 - error
+    this.state = 0   // 0 - ok 1 - warning 2 - error
 
     this.handle = null 
 
@@ -67,7 +67,7 @@ function MonitorInfo (opts) {
     Methods
 */
 
-MonitorInfo.prototype.__proto__ = events.prototype;
+MonitorInfo.prototype.__proto__ = events.prototype
  
 MonitorInfo.prototype.init = function (opts) {
         var self = this
@@ -145,7 +145,7 @@ MonitorInfo.prototype.ping = function () {
                                 { 'user': appSettings.getData().userName, 'pass': appSettings.getData().password, 'sendImmediately': true } :
                                 { 'user': self.userName, 'pass': self.userPassword, 'sendImmediately': true } : null,
                         headers: { 'User-Agent': 'request' }
-                };
+                }
 
                 request(options, function (error, res, body) {                   
                     if (!error && res.statusCode === 200) {

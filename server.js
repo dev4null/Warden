@@ -19,15 +19,15 @@ app.set('port', process.env.PORT || 3000)
 app.use(express.json())
 app.use(express.urlencoded())
 app.use(express.methodOverride())
-app.use(express.cookieParser());
+app.use(express.cookieParser())
 
 app.use(express.session({ 
 	secret: 'Z5V7J54G5TGC445VU5B7J556B3N6V6H5V4', 
 	cookie: { maxAge: 60 * 10 * 1000 }  
-	}));
+	}))
 
-app.use(passport.initialize()); 
-app.use(passport.session());   
+app.use(passport.initialize())
+app.use(passport.session()) 
 app.use(app.router)
 app.use(express.static(path.join(__dirname, 'public')))
 
@@ -37,31 +37,31 @@ passport.use(new LocalStrategy(
   function(username, password, done) {
     if (username === "q" && password === "q")
     {
-         return done(null, {name: username});
+         return done(null, {name: username})
     }
-    return done(null, false);
+    return done(null, false)
   }
-));
+))
 
 passport.serializeUser(function(user, done) {
-    done(null, user);
-});
+    done(null, user)
+})
 
 passport.deserializeUser(function(user, done) {
-    done(null, user);
-});
+    done(null, user)
+})
 
 var auth = function(req, res, next){
   if (!req.isAuthenticated()) 
-  	res.send(401);
+  	res.send(401)
   else
-  	next();
-};
+  	next()
+}
 //==================================================================
 
 //==================================================================
 //get route
-app.get('/getdata', function(req, res, next) { 	
+app.get('/getdata/:hash*', function(req, res, next) { 	
 	var monitorsMini=[]
   	monitors.forEach(function (monitorInfo) {
   		monitorsMini.push(monitorInfo.getData())
@@ -71,7 +71,7 @@ app.get('/getdata', function(req, res, next) {
   	res.end() 
 })
 
-app.get('/monitor/:id*', function(req, res, next) {
+app.get('/monitor/:id*/:hash*', function(req, res, next) {
 	var info = getMonitorById(req.param('id'))	
 	if (info)
 		{
@@ -86,7 +86,7 @@ app.get('/monitor/:id*', function(req, res, next) {
 })
 
 
-app.get('/detail/:id*', function(req, res, next) {
+app.get('/detail/:id*/:hash*', function(req, res, next) {
 	if (!appSettings.getData().useDataBase)
 	{
 		var info = getMonitorById(req.param('id'))		
@@ -103,13 +103,13 @@ app.get('/detail/:id*', function(req, res, next) {
     } 
 })
 
-app.get('/setting', auth, function(req, res, next) {
+app.get('/setting/:hash*', auth, function(req, res, next) {
 	res.writeHead(200, {"Content-Type": "application/json"})
 	res.write(JSON.stringify(appSettings.getData()))
 	res.end()	 
 })
 
-app.get('/alert', function(req, res, next) {	
+app.get('/alert/:hash*', function(req, res, next) {	
 	var monitorsMini=[]
 	var monitor
 
@@ -144,7 +144,7 @@ app.post('/stop', auth, function(req, res, next) {
 	{
 		monitor.stop()
 	}
-	res.send( monitor ? 200 :404); 
+	res.send( monitor ? 200 :404) 
 })
 
 
@@ -154,7 +154,7 @@ app.post('/start', auth, function(req, res, next) {
 	  {
 	  	monitor.start()
 	  }
-	res.send( monitor ? 200 :404);   
+	res.send( monitor ? 200 :404)   
 })
 
 app.post('/del', auth, function(req, res, next) {
@@ -162,12 +162,12 @@ app.post('/del', auth, function(req, res, next) {
 	if (monitor)
 	  {
 	  	monitor.stop()
-	  	var index = monitors.indexOf(monitor);
+	  	var index = monitors.indexOf(monitor)
 		if(index != -1) {
-			monitors.splice(index, 1);
+			monitors.splice(index, 1)
 		}
 	  }
-	res.send( monitor ? 200 :404); 
+	res.send( monitor ? 200 :404) 
 })
 
 app.post('/setting', auth, function(req, res, next){	
@@ -175,8 +175,8 @@ app.post('/setting', auth, function(req, res, next){
   	monitors.forEach(function (monitorInfo) {
   		monitorInfo.reloadDefault(appSettings.getData())
   	})
-	res.send(200);
-});
+	res.send(200)
+})
 
 
 app.post('/edit/:id*', auth, function(req, res, next){
@@ -186,28 +186,28 @@ app.post('/edit/:id*', auth, function(req, res, next){
 	  {
 	  	monitor.update(req.body)
 	  }
-	res.send( monitor ? 200 :404); 
-});
+	res.send( monitor ? 200 :404) 
+})
 
 app.post('/add', auth, function(req, res, next){
 	addMonitor(req.body)
-	res.send(200);
-});
+	res.send(200)
+})
 
 app.post('/login', passport.authenticate('local'), function(req, res) {
-  res.send(200);
-});
+  res.send(200)
+})
 
 app.post('/logout', function(req, res){
-  req.logOut();
-  res.send(200);
-});
+  req.logOut()
+  res.send(200)
+})
 
 //==================================================================
 
-app.get('/auth', function(req, res) {
-  res.send(req.isAuthenticated() ? req.user : '0');
-});
+app.get('/auth/:hash*', function(req, res) {
+  res.send(req.isAuthenticated() ? req.user : '0')
+})
 
 app.use(function(req, res) {
  	res.sendfile(__dirname + '/public/index.html')
@@ -328,6 +328,6 @@ var gcHandle = null
 var gc = global.gc || function() {
 	clearInterval(gcHandle) 
 	console.log("Unsupport gc")
-};
+}
 
 gcHandle = setInterval(function () {gc()}, 60000)

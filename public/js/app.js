@@ -5,32 +5,32 @@ var wardenApp = angular.module('wardenApp',['ngRoute','ui.bootstrap','ngResource
 wardenApp.config(function($routeProvider, $locationProvider, $httpProvider) {
   
     var isLogin = function($q, $timeout, $http, $location){
-      var deferred = $q.defer();
-      $http.get('/auth').success(function(user){
+      var deferred = $q.defer()
+      $http.get('/auth/'+ new Date().getTime()).success(function(user){
         if (user !== '0')
-          $timeout(deferred.resolve, 0);
+          $timeout(deferred.resolve, 0)
         else {
-          $timeout(function(){deferred.reject();}, 0);
-          $location.url('/');
+          $timeout(function(){deferred.reject()}, 0)
+          $location.url('/')
         }
-      });
-      return deferred.promise;
-    };
+      })
+      return deferred.promise
+    }
 
 	$httpProvider.responseInterceptors.push(function($q, $location) {
 	      return function(promise) {
 	        return promise.then(
 	          function(response){
-	            return response;
+	            return response
 	          }, 
 	          function(response) {
 	            if (response.status === 401)
-	              $location.url('/');
-	            return $q.reject(response);
+	              $location.url('/')
+	            return $q.reject(response)
 	          }
-	        );
+	        )
 	      }
-	    });
+	    })
 
 	$routeProvider
 	    .when('/', { templateUrl: '/template/monitor.html', controller: 'monitorCntl'})
@@ -39,7 +39,7 @@ wardenApp.config(function($routeProvider, $locationProvider, $httpProvider) {
 	    .when('/add', { templateUrl: '/template/edit.html', controller: 'addCntl', resolve: {auth: isLogin}})
 	    .when('/view/:id', { templateUrl: '/template/view.html', controller: 'viewCntl'})
 	    .when('/alerts', { templateUrl: '/template/alerts.html', controller: 'alertsCntl'})
-	    //.otherwise({redirectTo: '/'})
+	    .otherwise({redirectTo: '/'})
     
     $locationProvider.html5Mode(true)
 
@@ -47,13 +47,13 @@ wardenApp.config(function($routeProvider, $locationProvider, $httpProvider) {
 .run(function($rootScope,$http){
 	
 	var isLogin = function(){
-      $http.get('/auth').success(function(user){
+      $http.get('/auth/'+ new Date().getTime()).success(function(user){
       	$rootScope.isAdmin = user !== '0'
       })
       .error(function(){
-	      $rootScope.isAdmin = false;
-	    });
-    };
+	      $rootScope.isAdmin = false
+	    })
+    }
 
     isLogin()
 })
@@ -62,24 +62,24 @@ wardenApp.controller('MainCntl',function ($scope, $http, $location, $modal, $roo
 	$scope.errors = 0
 	$scope.warnings = 0
 	$scope.dataLoad=null
-	var socket = io.connect($location.protocol()+'://'+$location.host()+':'+$location.port());
+	var socket = io.connect($location.protocol()+'://'+$location.host()+':'+$location.port())
 		socket.on('alert', function (data) {
 			$scope.errors = data.error
 			$scope.warnings = data.warning
 			$scope.dataLoad = !$scope.dataLoad || true
-			$scope.$apply();
-		});
+			$scope.$apply()
+		})
 
 	$scope.goPath = function ( path ) {
 	  $location.path( path )
-	};
+	}
 
 	$scope.login = function () {
 
     var modalInstance = $modal.open({
       templateUrl: '/template/login.html',
       controller: 'loginCtrl'
-    });
+    })
 
     modalInstance.result.then(function (usr) {
     	$http.post('/login', {
@@ -90,17 +90,17 @@ wardenApp.controller('MainCntl',function ($scope, $http, $location, $modal, $roo
     		$rootScope.isAdmin=true
 	    })
 	    .error(function(){
-	      growl.addErrorMessage("Failed login", {ttl: 7500});
-	      $location.url('/');
-	    });
-    });
+	      growl.addErrorMessage("Failed login", {ttl: 7500})
+	      $location.url('/')
+	    })
+    })
 
-  };
+  }
 
   $scope.logout = function(){
   	  $scope.isAdmin=false
-      $http.post('/logout');
-    };
+      $http.post('/logout')
+    }
 })
 
 wardenApp.controller('loginCtrl', function ($scope, $modalInstance) {
@@ -110,14 +110,13 @@ wardenApp.controller('loginCtrl', function ($scope, $modalInstance) {
 	}
 
   $scope.ok = function () {
-    $modalInstance.close($scope.user);
-  };
+    $modalInstance.close($scope.user)
+  }
 
   $scope.cancel = function () {
-    $modalInstance.dismiss('cancel');
-  };
-});
-
+    $modalInstance.dismiss('cancel')
+  }
+})
 
 wardenApp.controller('addCntl', function($scope, $http, $location, growl) {
 	$scope.title="Add"
@@ -133,11 +132,11 @@ wardenApp.controller('addCntl', function($scope, $http, $location, growl) {
 	$scope.save=function(){
         $http.post('/add', angular.toJson($scope.site))
         	.success(function(data, status, headers, config){ 
-				$location.path( '/' );
+				$location.path( '/' )
 	    	})
 	    	.error(function(data, status, headers, config) {
-	    		growl.addErrorMessage("Failed to save" + "("+status+")", {ttl: 7500});	
-	    	});
+	    		growl.addErrorMessage("Failed to save" + "("+status+")", {ttl: 7500})	
+	    	})
 	} 
 })
 
@@ -157,7 +156,7 @@ wardenApp.controller('editCntl', function($scope, $route, $location, $http, grow
   	} 
 
    var getData = function() {
-		$http.get('/monitor/'+$route.current.params.id)
+		$http.get('/monitor/'+$route.current.params.id+'/'+new Date().getTime())
 	        .success(function(data) {
 				$scope.site = angular.fromJson(data)
 
@@ -176,28 +175,28 @@ wardenApp.controller('editCntl', function($scope, $route, $location, $http, grow
 					        	
 	            })
 	            .error(function(data, status) {
-	            	growl.addErrorMessage("Failed to load data" + "("+status+")", {ttl: 7500});	
+	            	growl.addErrorMessage("Failed to load data" + "("+status+")", {ttl: 7500})	
 	            })
 	}
 
 	$scope.save=function(){
         $http.post('/edit/'+$scope.site.id, angular.toJson($scope.site))
         	.success(function(data, status, headers, config){ 
-				$location.path( '/' );
+				$location.path( '/' )
 	    	})
 	    	.error(function(data, status) {
-	    		growl.addErrorMessage("Failed to update" + "("+status+")", {ttl: 7500});	
-	    	});
+	    		growl.addErrorMessage("Failed to update" + "("+status+")", {ttl: 7500})	
+	    	})
 	}
 
 	$scope.setActive = function()
 	{
 		$http.post($scope.site.active ? '/stop': '/start', {id: $scope.site.id})
 	    	.success(function(data) {
-	       		$location.path( '/' );
+	       		$location.path( '/' )
 	    	})
 	    	.error(function(data, status) {
-	    		growl.addErrorMessage("Failed to change state" + "("+status+")", {ttl: 7500});	
+	    		growl.addErrorMessage("Failed to change state" + "("+status+")", {ttl: 7500})	
 	    	})
 	}
 
@@ -205,10 +204,10 @@ wardenApp.controller('editCntl', function($scope, $route, $location, $http, grow
 	{
 		$http.post('/del', {id: $scope.site.id})
 	        .success(function(data) {
-	        	$location.path( '/' );
+	        	$location.path( '/' )
 	    	})
 	        .error(function(data, status) {
-	        	growl.addErrorMessage("Failed to delete" + "("+status+")", {ttl: 7500});	
+	        	growl.addErrorMessage("Failed to delete" + "("+status+")", {ttl: 7500})	
 	        })
 	}
 	getData()
@@ -216,12 +215,12 @@ wardenApp.controller('editCntl', function($scope, $route, $location, $http, grow
 
 wardenApp.controller('alertsCntl', function ($scope, $http, growl) {
 	var getData = function() {
-		$http.get('/alert')
+		$http.get('/alert/'+new Date().getTime())
 	        .success(function(data) {
 				$scope.sites = angular.fromJson(data)				        	
 	        })
 	        .error(function(data, status) {
-	        	growl.addErrorMessage("Failed to load data" + "("+status+")", {ttl: 7500});	
+	        	growl.addErrorMessage("Failed to load data" + "("+status+")", {ttl: 7500})	
 	         })
 	}
 	
@@ -236,12 +235,12 @@ wardenApp.controller('alertsCntl', function ($scope, $http, growl) {
 wardenApp.controller('viewCntl', function ($scope, $route, $http, growl) {
   
   var getData = function() {
-		$http.get('/detail/'+$route.current.params.id)
+		$http.get('/detail/'+$route.current.params.id+'/'+new Date().getTime())
 	        .success(function(data) {
 				$scope.site = angular.fromJson(data)				        	
 	        })
 	        .error(function(data, status) {
-	        	growl.addErrorMessage("Failed to load data" + "("+status+")", {ttl: 7500});	
+	        	growl.addErrorMessage("Failed to load data" + "("+status+")", {ttl: 7500})	
 	        })
 	}
 
@@ -294,16 +293,16 @@ wardenApp.controller('monitorCntl', function ($scope, $http, growl) {
 	}
 
 	var getData = function() {
-		$http.get('/getdata')
+		$http.get('/getdata/'+new Date().getTime())
 	        .success(function(data) {
 				$scope.sites = angular.fromJson(data)
 	            })
 	            .error(function(data, status) {
-	            	growl.addErrorMessage("Failed to load data"+ "("+status+")", {ttl: 7500});	
+	            	growl.addErrorMessage("Failed to load data"+ "("+status+")", {ttl: 7500})	
 	            })
 	        }
 
-	var listerAlert = $scope.$watch('dataLoad', function(dataLoad) { if (dataLoad) {getData()} }, false);
+	var listerAlert = $scope.$watch('dataLoad', function(dataLoad) { if (dataLoad) {getData()} }, false)
 
 	$scope.$on("$destroy", function(){
 	    listerAlert ()
@@ -314,18 +313,20 @@ wardenApp.controller('monitorCntl', function ($scope, $http, growl) {
 		getData()
 	}
 
+	getData()
+
 })
 
 wardenApp.controller('settingCntl', function ($scope, $http, $location, growl) {
 	$scope.email=''
 
 	var getData = function() {
-		$http.get('/setting')
+		$http.get('/setting/'+new Date().getTime())
 	        .success(function(data) {
 				$scope.item = data
 	            })
 	            .error(function(data, status) {
-	            	growl.addErrorMessage("Failed to load setting"+ "("+status+")", {ttl: 7500});	
+	            	growl.addErrorMessage("Failed to load setting"+ "("+status+")", {ttl: 7500})	
 	            })
 	        }
 	
@@ -347,11 +348,11 @@ wardenApp.controller('settingCntl', function ($scope, $http, $location, growl) {
 		    	data: angular.toJson($scope.item)
 			})
         .success(function(data, status){ 
-			$location.path( '/' );
+			$location.path( '/' )
 	    })
 	    .error(function(data, status, headers, config) {
-	    	growl.addErrorMessage("Failed to save " + "("+status+")", {ttl: 7500});	
-	    });
+	    	growl.addErrorMessage("Failed to save " + "("+status+")", {ttl: 7500})	
+	    })
 	}
 
 	getData()
@@ -361,16 +362,16 @@ wardenApp.controller('settingCntl', function ($scope, $http, $location, growl) {
 wardenApp.directive('login', function() {
      return function($rootScope, element, attr) { 
      	$rootScope.$watch('isAdmin', function(isAdmin) {
-               element.css({ display: isAdmin ? 'initial' : 'none' });
-            }, true);  	
-    };
+               element.css({ display: isAdmin ? 'initial' : 'none' })
+            }, true)  	
+    }
   })
 
 wardenApp.directive('public', function() {
      return function($rootScope, element, attr) { 
      	$rootScope.$watch('isAdmin', function(isAdmin) {
-               element.css({ display: isAdmin ? 'none' : 'initial' });
-            }, true);  	
-    };
+               element.css({ display: isAdmin ? 'none' : 'initial' })
+            }, true)  	
+    }
   })
 */
